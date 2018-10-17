@@ -14,7 +14,14 @@
 
 <body>
     <h1 class="jumbotron">Welcome to the {{user.firstname}}'s wall <a class='logout' href="/users/logout">logout</a></h1>
-    <form action="messageapp/newmessage/{{user.id}}" method="post" id="msgform">
+    <ul class="messages">
+    {% if messages %}
+        {% for message in messages %}
+        <li {% if message.errors %} class="{{ message.errors }}" {% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <form action="/new/newmessage/{{user.id}}" method="post" id="msgform">
         {% csrf_token %}
 
         <textarea type="text" name="messagecontent" cols='80' placeholder="leave a message" id="msgform"></textarea>
@@ -22,20 +29,21 @@
 
         <input type="submit" value="submit">
     </form>
-    {%for message in messages reversed%}
-    <div class='message'></p>{{message.user.firstname}}: {{message.content}} - <span class='bluespan'>{{message.created_at}}</span></p>
-    <ul>
-        {%for comment in message.comments.all %}
-        <li class='comment'>{{comment.ucomment.firstname}}: {{comment.content}} - <span>{{comment.created_at}}</span></li>
-        {%endfor%}
-        <form action="messageapp/newcomment" method="post" id='commentform'>
-            {% csrf_token %}
-            <input type="text" name="commentcontent" placeholder="leave a comment">
-            <input type="hidden" name="hidden" value="{{message.id}}">
-            <input type="hidden" name="hidden2" value="{{user.id}}">
-            <input type="submit" value="submit">
-        </form>
-    </ul>
+    {%for message in allmessages reversed%}
+    <div class='message'>
+        </p>{{message.user.firstname}}: {{message.content}} - <span class='bluespan'>{{message.created_at}}</span></p>
+        <ul>
+            {%for comment in message.comments.all %}
+            <li class='comment'>{{comment.ucomment.firstname}}: {{comment.content}} - <span>{{comment.created_at}}</span></li>
+            {%endfor%}
+            <form action="/new/newcomment" method="post" id='commentform'>
+                {% csrf_token %}
+                <input type="text" name="commentcontent" placeholder="leave a comment">
+                <input type="hidden" name="hidden" value="{{message.id}}">
+                <input type="hidden" name="hidden2" value="{{user.id}}">
+                <input type="submit" value="submit">
+            </form>
+        </ul>
     </div>
     {%endfor%}
     <a href="/dashboard">see all users</a>

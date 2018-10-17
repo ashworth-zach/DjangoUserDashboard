@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 import bcrypt
 from .models import *
-from ..messageapp.models import Message 
+from ..messageapp.models import *
 #------------------------------------------------------------------------
 #------------------------------------------------------------------------
 def index(request):
@@ -96,17 +96,18 @@ def login(request):
         # redirect the user back to the form to fix the errors
         return redirect('/signin')
     request.session['email']=request.POST['email']
-    return redirect('/')
+    return redirect('/dashboard')
 #------------------------------------------------------------------------
-def newuser(request):
-    return render(request, 'users/newuser.html')
 #------------------------------------------------------------------------
 def show(request, userid):
     context={
         'user':User.objects.all().values().get(id=userid),
-        'messages':Message.objects.all().filter(recipient=userid),
+        'allmessages':Message.objects.all().filter(recipient=userid),
         'currentuser':User.objects.all().get(email=request.session['email']),
         'comments':Comment.objects.all()
     }
     return render(request, 'users/thewall.html', context)
 #------------------------------------------------------------------------
+def logout(request):
+    del request.session
+    return redirect('/')
