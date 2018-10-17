@@ -14,7 +14,7 @@
 
 <body>
     <div class="jumbotron text-center">
-        <h1>registration form</h1>
+        <h1>all users</h1>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">User Dashboard</a>
@@ -35,36 +35,26 @@
           </ul>
         </div>
       </nav>
-    <form class='register' action='/users/register/process' , method='post'>
-        <p>register</p>
-        {% csrf_token %}
-        <label>first name</label>
-        <input id="firstname" name="firstname" type="text">
+<table>
+    <th>id</th>
+    <th>name</th>
+    <th>email</th>
+    <th>created at</th>
+    <th>user_level</th>
+    <th>actions</th>
+    {%for user in users%}
+    <tr>
+        <td>{{user.id}}</td>
+        <td><a href="/{{user.id}}/show">{{user.firstname}} {{user.lastname}}</a></td>
+        <td>{{user.email}}</td>
+        <td>{{user.created_at}}</td>
+        <td>{{user.userlevel}}</td>
+        <td><a href="/users/{{user.id}}/showedit">edit</a> <a href="/users/{{user.id}}/delete">remove</a></td>
+    </tr>
+    {%endfor%}
+</table>
+<a href="/">go home</a>
 
-        <label for="lastname">last name</label>
-        <input id="lastname" name="lastname" type="text">
-
-        <label for="email">Email</label>
-        <input id="email" name="email" type="text">
-
-        <label for="password">password</label>
-        <input id="password" name="password" type="password">
-
-        <label for="passwordconf">confirm password</label>
-        <input id="passwordconf" name="passwordconf" type="password">
-        <button type="submit">Submit</button>
-        <a href="/signin">already registered? Log in here!</a>
-
-    </form>
-    <div class="errorbox">
-        {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-            <li {% if message.errors %} class="{{ message.errors }}" {% endif %}>{{ message }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-    </div>
 </body>
 
 </html>

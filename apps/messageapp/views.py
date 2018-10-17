@@ -22,9 +22,8 @@ def newmessage(request,recipientid):
         # retrieve the user to be updated, make the changes, and save
         content = request.POST['messagecontent']
         print(request.POST['hidden'])
-        this_user=User.objects.get(id=request.POST['hidden'])
         this_recipient=User.objects.get(id=recipientid)
-        Message.objects.create(content=content,user=this_user,recipient=this_recipient)
+        Message.objects.create(content=content,recipient=this_recipient,user_id=request.POST['hidden2'])
         messages.success(request, "Message successfully posted")
         # redirect to a success route
         return redirect(redirectstr)
@@ -47,6 +46,6 @@ def newcomment(request):
         content = request.POST['commentcontent']
         print(request.POST['hidden'])
         this_message=Message.objects.get(id=request.POST['hidden'])
-        this_user=User.objects.get(id=request.POST['hidden2'])
+        this_user=User.objects.get(id=request.POST['hidden3'])
         Comment.objects.create(content=content,message=this_message,ucomment=this_user)
         return redirect(redirectstr)

@@ -14,7 +14,7 @@
 
 <body>
     <div class="jumbotron text-center">
-        <h1>registration form</h1>
+        <h1>admin edit user ({{user.firstname}})</h1>
     </div>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <a class="navbar-brand" href="#">User Dashboard</a>
@@ -35,7 +35,7 @@
           </ul>
         </div>
       </nav>
-    <form class='register' action='/users/register/process' , method='post'>
+    <form class='register' action='/users/{{user.id}}/update' , method='post'>
         <p>register</p>
         {% csrf_token %}
         <label>first name</label>
@@ -53,7 +53,7 @@
         <label for="passwordconf">confirm password</label>
         <input id="passwordconf" name="passwordconf" type="password">
         <button type="submit">Submit</button>
-        <a href="/signin">already registered? Log in here!</a>
+        <a href="/dashboard/admin">go back to admin dashboard</a>
 
     </form>
     <div class="errorbox">
